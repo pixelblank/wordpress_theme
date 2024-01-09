@@ -1,4 +1,4 @@
-# Drawing on Canvas
+# Theme WordPress
 
 ## Description
 Mon premier theme wordpress
