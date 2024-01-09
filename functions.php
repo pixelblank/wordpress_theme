@@ -9,69 +9,11 @@ Description: theme
 Version: 1.0
 */
 
-function img_avnt_setup() {
-    // Ajout du support pour les images à la une
-    add_theme_support( 'post-thumbnails' );
-}
-add_action( 'after_setup_theme', 'img_avnt_setup' );
-
-function pixeltheme_setup() {
-    // Support pour le logo personnalisé
-    add_theme_support( 'custom-logo', array(
-        'height'      => 100,
-        'width'       => 400,
-        'flex-width'  => true,
-        'flex-height' => true,
-    ) );
-}
-add_action( 'after_setup_theme', 'pixeltheme_setup' );
-
-class Custom_Walker_Nav_Menu extends Walker_Nav_Menu {
-    function start_el(&$output, $item, $depth = 0, $args = array(), $id = 0) {
-        // Ajouter le slug à la classe de l'élément de menu
-        if ($item->object_id) {
-            $post = get_post($item->object_id);
-            $slug = $post->post_name;
-            $classes = empty($item->classes) ? array() : (array) $item->classes;
-            $classes[] = 'menu-item-slug-' . $slug;
-            $item->classes = $classes;
-        }
-
-        // Générer le HTML de l'élément de menu
-        parent::start_el($output, $item, $depth, $args, $id);
-    }
-}
-
-function pregister_nav_menu() {
-    register_nav_menus( array(
-        'menu-header' => __( 'Menu Header', 'pixeltheme' ),
-        'menu-footer' => __( 'Menu Footer', 'pixeltheme' ),
-    ) );
-}
-add_action( 'after_setup_theme', 'pregister_nav_menu' );
-
-function custom_user_register() {
-    if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])) {
-        $username = sanitize_user($_POST['username']);
-        $email = sanitize_email($_POST['email']);
-        $password = esc_attr($_POST['password']);
-        $user_id = wp_create_user($username, $password, $email);
-        if (!is_wp_error($user_id)) {
-            // Redirection ou autre traitement après l'inscription réussie
-            wp_redirect(home_url());
-            exit;
-        } else {
-            // Gérer l'erreur ici
-            echo $user_id->get_error_message();
-        }
-    }
-}
-
-add_action('init', 'custom_user_register');
 
 function load_scripts(){
     wp_enqueue_style( 'pixel_root_style', get_stylesheet_directory_uri() . '/style.css');
     wp_enqueue_style( 'pixel-style', get_stylesheet_directory_uri() . '/assets/css/main.css');
+    wp_enqueue_style( 'ico_css', get_stylesheet_directory_uri() . '/assets/css/ico-style.css');
     wp_enqueue_style( 'fontawesome_css', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
     wp_enqueue_style( 'fontawesome_map_css', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css.map');
     wp_enqueue_style( 'fontawesome_otf', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/FontAwesome.otf');
@@ -82,6 +24,82 @@ function load_scripts(){
     wp_enqueue_style( 'fontawesome_woff2', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2');
 }
 add_action( 'wp_enqueue_scripts', 'load_scripts' );
+
+function pixeltheme_enqueue_scripts() {
+    wp_enqueue_script('pixeltheme-admin-script', get_template_directory_uri() . '/assets/js/admin_script.js', array('jquery'), null, true);
+
+    if (!did_action('wp_enqueue_media')) {
+        wp_enqueue_media();
+    }
+}
+add_action('admin_enqueue_scripts', 'pixeltheme_enqueue_scripts');
+
+// Ajout du support pour les images à la une
+function img_avnt_setup() {
+    add_theme_support( 'post-thumbnails' );
+}
+add_action( 'after_setup_theme', 'img_avnt_setup' );
+
+// Support pour le logo personnalisé
+function pixeltheme_setup() {
+
+    add_theme_support( 'custom-logo', array(
+        'height'      => 100,
+        'width'       => 400,
+        'flex-width'  => true,
+        'flex-height' => true,
+    ) );
+}
+add_action( 'after_setup_theme', 'pixeltheme_setup' );
+
+// Support du format SVG
+function pixeltheme_allow_svg_upload($mimes) {
+    $mimes['svg'] = 'image/svg+xml';
+    return $mimes;
+}
+add_filter('upload_mimes', 'pixeltheme_allow_svg_upload');
+
+// Ajouter le slug à la classe de l'élément de menu
+class Custom_Walker_Nav_Menu extends Walker_Nav_Menu {
+    function start_el(&$output, $item, $depth = 0, $args = array(), $id = 0) {
+        if ($item->object_id) {
+            $post = get_post($item->object_id);
+            $slug = $post->post_name;
+            $classes = empty($item->classes) ? array() : (array) $item->classes;
+            $classes[] = 'menu-item-slug-' . $slug;
+            $item->classes = $classes;
+        }
+        parent::start_el($output, $item, $depth, $args, $id);
+    }
+}
+
+// Ajout des differents menu
+function pregister_nav_menu() {
+    register_nav_menus( array(
+        'menu-header' => __( 'Menu Header', 'pixeltheme' ),
+        'menu-footer' => __( 'Menu Footer', 'pixeltheme' ),
+    ) );
+}
+add_action( 'after_setup_theme', 'pregister_nav_menu' );
+
+// custom register
+function custom_user_register() {
+    if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])) {
+        $username = sanitize_user($_POST['username']);
+        $email = sanitize_email($_POST['email']);
+        $password = esc_attr($_POST['password']);
+        $user_id = wp_create_user($username, $password, $email);
+        if (!is_wp_error($user_id)) {
+            wp_redirect(home_url());
+            exit;
+        } else {
+            echo $user_id->get_error_message();
+        }
+    }
+}
+
+add_action('init', 'custom_user_register');
+
 
 // données nécessaires
 function pixeltheme_needed_pages(){
@@ -160,14 +178,6 @@ function enqueue_my_ajax_script() {
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_my_ajax_script' );
 
-function pixeltheme_enqueue_scripts() {
-    wp_enqueue_script('pixeltheme-admin-script', get_template_directory_uri() . '/assets/js/admin_script.js', array('jquery'), null, true);
-
-    if (!did_action('wp_enqueue_media')) {
-        wp_enqueue_media();
-    }
-}
-add_action('admin_enqueue_scripts', 'pixeltheme_enqueue_scripts');
 
 function req_cat() {
     check_ajax_referer('my_ajax_nonce', 'nonce');
@@ -255,17 +265,64 @@ add_action('wp_ajax_req_cat', 'req_cat'); // Pour les utilisateurs connectés
 add_action('wp_ajax_nopriv_req_cat', 'req_cat'); // Pour les utilisateurs non connectés
 
 
+////////////////////////////////////////////////// ajout d'icones aux categories
+
+// listing des icones depuis le css generer par icomoon
+function get_icon_classes_from_css() {
+    $icons = [];
+    $css_file = get_stylesheet_directory() . '/assets/css/ico-style.css'; // Chemin vers votre fichier CSS
+
+    if(file_exists($css_file)) {
+        $css_content = file_get_contents($css_file);
+        preg_match_all('/\.icon-([a-zA-Z0-9_-]+):before\s*\{\s*content\s*:\s*"\\\\e[0-9a-f]{3,4}";\s*\}/', $css_content, $matches);
+        if(!empty($matches) && isset($matches[1])) {
+            $icons = $matches[1];
+        }
+    }
+
+    return $icons;
+}
+
+
 function add_category_icon_field_create($taxonomy) {
+    $icons = get_icon_classes_from_css();
     ?>
     <div class="form-field term-group">
         <label for="icone_cat"><?php _e('Icône de la catégorie', 'text-domain'); ?></label>
-        <input type="text" id="icone_cat" name="icone_cat" class="icone-cat-field">
-        <button type="button" class="button select-icone-cat"><?php _e('Sélectionner une icône', 'text-domain'); ?></button>
+        <select id="icone_cat" name="icone_cat" class="icone-cat-field">
+            <?php foreach($icons as $icon): ?>
+                <option value="icon-<?php echo esc_attr($icon); ?>">icon-<?php echo $icon; ?></span></option>
+            <?php endforeach; ?>
+        </select>
         <p class="description"><?php _e('Entrez l’URL de l’icône pour cette catégorie.', 'text-domain'); ?></p>
     </div>
     <?php
 }
 add_action('category_add_form_fields', 'add_category_icon_field_create');
+
+function add_category_icon_field($term) {
+    // Récupérer la valeur existante, si elle existe
+    $icone_cat = get_term_meta($term->term_id, 'icone_cat', true);
+    $icons = get_icon_classes_from_css();
+    ?>
+    <tr class="form-field">
+        <th scope="row" valign="top">
+            <label for="icone_cat">
+                <?php _e('Icône de la catégorie', 'text-domain'); ?>
+            </label></th>
+        <td>
+            <input type="text" id="icone_cat" name="icone_cat" class="icone-cat-field" value="<?php echo esc_attr($icone_cat); ?>">
+            <select id="icone_cat" name="icone_cat" class="icone-cat-field">
+                <?php foreach($icons as $icon): ?>
+                    <option value="icon-<?php echo esc_attr($icon); ?>">icon-<?php echo $icon; ?></span></option>
+                <?php endforeach; ?>
+            </select>
+            <p class="description"><?php _e('Entrez l’URL de l’icône pour cette catégorie.', 'text-domain'); ?></p>
+        </td>
+    </tr>
+    <?php
+}
+add_action('category_edit_form_fields', 'add_category_icon_field');
 
 function save_category_icon_field_create($term_id) {
     if (isset($_POST['icone_cat'])) {
@@ -273,21 +330,6 @@ function save_category_icon_field_create($term_id) {
     }
 }
 add_action('created_category', 'save_category_icon_field_create');
-
-function add_category_icon_field($term) {
-    // Récupérer la valeur existante, si elle existe
-    $icone_cat = get_term_meta($term->term_id, 'icone_cat', true);
-    ?>
-    <tr class="form-field">
-        <th scope="row" valign="top"><label for="icone_cat"><?php _e('Icône de la catégorie'); ?></label></th>
-        <td>
-            <input type="text" name="icone_cat" id="icone_cat" value="<?php echo esc_attr($icone_cat); ?>">
-            <p class="description"><?php _e('Entrez l’URL de l’icône pour cette catégorie.'); ?></p>
-        </td>
-    </tr>
-    <?php
-}
-add_action('category_edit_form_fields', 'add_category_icon_field');
 
 function save_category_icon_field($term_id) {
     if (isset($_POST['icone_cat'])) {

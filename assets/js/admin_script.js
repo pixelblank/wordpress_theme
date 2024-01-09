@@ -25,3 +25,10 @@ jQuery(document).ready(function($){
         frame.open();
     });
 });
+jQuery(document).ready(function($) {
+    $('.select-icone-categorie').click(function() {
+        console.log('sdfqsmdlfj');
+        // Ouvrir le sélecteur d'icônes et gérer la sélection
+        // Mettre à jour la valeur du champ 'icone_cat' avec l'icône sélectionnée
+    });
+});
