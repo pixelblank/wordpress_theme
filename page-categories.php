@@ -4,19 +4,21 @@
 <?php get_header(); ?>
 
 <main>
-    <?php
-
-        $categories = get_categories();
-        foreach($categories as $category) {
-            $icone_cat = get_term_meta($category->term_id, 'icone_cat', true);
-            if ($icone_cat) {
-                echo '<a href="#" class="category-link" data-category="' . esc_attr($category->term_id) . '"><span class="' . $icone_cat . '"></span>' . esc_html($category->name) . '</a>';
-            }else{
-                echo '<a href="#" class="category-link" data-category="' . esc_attr($category->term_id) . '">' . esc_html($category->name) . '</a>';
+    <div class="categories_nav">
+        <ul>
+            <?php
+            $categories = get_categories();
+            foreach($categories as $category) {
+                $icone_cat = get_term_meta($category->term_id, 'icone_cat', true);
+                if ($icone_cat) {
+                    echo '<a href="#" class="category-link" data-category="' . esc_attr($category->term_id) . '"><span class="cat-ico ' . $icone_cat . '"></span><span class="cat-title">' . esc_html($category->name) . '</span></a>';
+                }else{
+                    echo '<a href="#" class="category-link" data-category="' . esc_attr($category->term_id) . '"><span class="cat-title">' . esc_html($category->name) . '</span></a>';
+                }
             }
-        }
-    ?>
-
+            ?>
+        </ul>
+    </div>
     <div class="post_cnt">
         <?php if ( have_posts() ) : ?>
             <?php

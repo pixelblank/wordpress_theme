@@ -34,6 +34,12 @@ function pixeltheme_enqueue_scripts() {
 }
 add_action('admin_enqueue_scripts', 'pixeltheme_enqueue_scripts');
 
+function custom_admin_style() {
+    wp_enqueue_style('custom-admin-style', get_stylesheet_directory_uri() . '/assets/css/admin-style.css');
+}
+add_action('admin_enqueue_scripts', 'custom_admin_style');
+
+
 // Ajout du support pour les images à la une
 function img_avnt_setup() {
     add_theme_support( 'post-thumbnails' );

@@ -1,0 +1,60 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+#wpcontent{
+    background-color: #646469;
+}
+body
+{
+    background-color: #646469;
+    color: #3c434a;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+    font-size: 13px;
+    line-height: 1.4em;
+    min-width: 600px;
+}
+a
+{
+    color: #b9d4f9;
+    transition-property: border,background,color;
+    transition-duration: .05s;
+    transition-timing-function: ease-in-out;
+}
+.notice, div.error, div.updated
+{
+    background: #a5a5a5;
+    border: 1px solid #c3c4c7;
+    border-left-width: 1px;
+    border-left-color: rgb(195, 196, 199);
+    border-left-width: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    margin: 5px 15px 2px;
+    padding: 1px 12px;
+    padding-right: 12px;
+}
+.postbox
+{
+    position: relative;
+    min-width: 255px;
+    border: 1px solid #c3c4c7;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    background: #a5a5a5;
+}
+.comment-ays, .feature-filter, .popular-tags, .stuffbox, .widgets-holder-wrap, .wp-editor-container, p.popular-tags, table.widefat
+{
+    background: #a5a5a5;
+}
+.alternate, .striped > tbody > :nth-child(2n+1), ul.striped > :nth-child(2n+1)
+{
+    background: #848484;
+}
+.term-description-wrap{
+    display: none;
+}
+.form-wrap p, p.description
+{
+    margin: 2px 0 5px;
+    color: #c7d0d7;
+}

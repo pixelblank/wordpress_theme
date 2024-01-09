@@ -28,7 +28,6 @@ jQuery(document).ready(function($) {
       e.preventDefault(); // Empêcher le comportement par défaut des liens
       var category_id = $(this).data('category');
       $('#load-more').data('category', category_id).data('page', 1);
-
       $.ajax({
          type: 'POST',
          url: ajax_object.ajax_url,
