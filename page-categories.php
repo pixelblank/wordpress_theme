@@ -11,9 +11,9 @@
             foreach($categories as $category) {
                 $icone_cat = get_term_meta($category->term_id, 'icone_cat', true);
                 if ($icone_cat) {
-                    echo '<a href="#" class="category-link" data-category="' . esc_attr($category->term_id) . '"><span class="cat-ico ' . $icone_cat . '"></span><span class="cat-title">' . esc_html($category->name) . '</span></a>';
+                    echo '<li><a href="#" class="category-link" data-category="' . esc_attr($category->term_id) . '"><span class="cat-ico ' . $icone_cat . '"></span><span class="cat-title">' . esc_html($category->name) . '</span></a></li>';
                 }else{
-                    echo '<a href="#" class="category-link" data-category="' . esc_attr($category->term_id) . '"><span class="cat-title">' . esc_html($category->name) . '</span></a>';
+                    echo '<li><a href="#" class="category-link" data-category="' . esc_attr($category->term_id) . '"><span class="cat-title">' . esc_html($category->name) . '</span></a></li>';
                 }
             }
             ?>
@@ -27,7 +27,6 @@
                 if($post->post_type === 'page'){
                     continue;
                 }
-
                 ?>
                 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 

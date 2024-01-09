@@ -35,7 +35,13 @@ function pixeltheme_enqueue_scripts() {
 add_action('admin_enqueue_scripts', 'pixeltheme_enqueue_scripts');
 
 function custom_admin_style() {
-    wp_enqueue_style('custom-admin-style', get_stylesheet_directory_uri() . '/assets/css/admin-style.css');
+    $current_user = wp_get_current_user();
+    if($current_user === "administrator"){
+        wp_enqueue_style('custom-admin-style', get_stylesheet_directory_uri() . '/assets/css/admin-style.css');
+    }elseif (in_array('author', $current_user->roles)) {
+        // Si l'utilisateur est un éditeur
+        wp_enqueue_style('custom-admin-style-editor', get_template_directory_uri() . '/assets/css/admin-style-editor.css');
+    }
 }
 add_action('admin_enqueue_scripts', 'custom_admin_style');
 
