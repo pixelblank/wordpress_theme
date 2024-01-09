@@ -10,9 +10,10 @@
         foreach($categories as $category) {
             $icone_cat = get_term_meta($category->term_id, 'icone_cat', true);
             if ($icone_cat) {
-                echo '<span class="' . $icone_cat . '"></span>';
+                echo '<a href="#" class="category-link" data-category="' . esc_attr($category->term_id) . '"><span class="' . $icone_cat . '"></span>' . esc_html($category->name) . '</a>';
+            }else{
+                echo '<a href="#" class="category-link" data-category="' . esc_attr($category->term_id) . '">' . esc_html($category->name) . '</a>';
             }
-            echo '<a href="#" class="category-link" data-category="' . esc_attr($category->term_id) . '">' . esc_html($category->name) . '</a>';
         }
     ?>
 
