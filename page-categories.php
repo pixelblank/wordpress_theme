@@ -4,6 +4,9 @@
 <?php get_header(); ?>
 
 <main>
+    <div id="catLoader">
+        loading
+    </div>
     <div class="categories_nav">
         <ul>
             <?php
@@ -76,9 +79,20 @@
                                             Catégorie:
                                         </span>
                             </div>
-                            <span class="category_list">
-                                        <?php the_category(', '); ?>
-                                    </span>
+                            <span class="category_list 2">
+                                <?php
+                                $categories = get_the_category();
+                                $separator = ', ';
+                                $output = '';
+
+                                if (!empty($categories)) {
+                                    foreach ($categories as $category) {
+                                        $output .= '<a href="#" class="category_list" data-category="' . esc_attr($category->term_id) . '">' . esc_html($category->name) . '</a>' . $separator;
+                                    }
+                                    echo trim($output, $separator);
+                                }
+                                ?>
+                            </span>
 
                         </div>
                     </footer>

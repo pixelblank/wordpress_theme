@@ -195,7 +195,6 @@ function req_cat() {
     check_ajax_referer('my_ajax_nonce', 'nonce');
 
     $category_id = $_POST['category_id'];
-    $paged = isset($_POST['paged']) ? $_POST['paged'] : 1;
     //var_dump($category_id);
 
     // Récupérer les articles de la catégorie
@@ -203,7 +202,6 @@ function req_cat() {
         'post_status' => 'publish',
         'posts_per_page' => -1, // Nombre d'articles à afficher, -1 pour tous
         'cat' => $category_id, // Utilisez 'cat' pour filtrer par ID de catégorie
-        'paged' => $paged
     );
     $query = new WP_Query($args);
 
@@ -257,9 +255,20 @@ function req_cat() {
                                         Catégorie:
                                     </span>
                                 </div>
-                                <span class="category_list">
-                                    <?php the_category(', '); ?>
-                                </span>
+                                <span class="category_list 2">
+                                <?php
+                                $categories = get_the_category();
+                                $separator = ', ';
+                                $output = '';
+
+                                if (!empty($categories)) {
+                                    foreach ($categories as $category) {
+                                        $output .= '<a href="#" class="category_list" data-category="' . esc_attr($category->term_id) . '">' . esc_html($category->name) . '</a>' . $separator;
+                                    }
+                                    echo trim($output, $separator);
+                                }
+                                ?>
+                            </span>
 
                             </div>
                         </footer>
