@@ -7,21 +7,15 @@ jQuery(document).ready(function($) {
    $(document).on('click', '.category-link, .category_list', function(e) {
       e.preventDefault(); // Empêcher le comportement par défaut des liens
       e.stopPropagation();
-      var category_id;
-      if($(this).hasClass('category-link')) {
-         // Traiter en tant que category-link
-         category_id = $(this).data('category');
-      } else if($(this).hasClass('category_list')) {
-         // Traiter en tant que category_list
-         category_id = $(this).data('category'); // Par exemple, si le category_id est dans l'attribut href
-      }
-      console.log(category_id);
+      let category_id = $(this).data('category') || 'all';
+      const post_cnt = document.querySelector('.post_cnt');
       const categoryLinks = document.querySelectorAll('.category-link');
       const catLoader = document.querySelector('#catLoader');
       catLoader.classList.add('active');
       categoryLinks.forEach(function(link) {
          link.parentElement.classList.remove('active');
       });
+      post_cnt.classList.add('active');
       this.parentElement.classList.add('active');
       $.ajax({
          type: 'POST',
@@ -33,11 +27,14 @@ jQuery(document).ready(function($) {
          },
          success: function(response) {
             $('.post_cnt').html(response);
+            post_cnt.classList.remove('active')
             catLoader.classList.remove('active');
+
          },
          error: function(error) {
             console.log(error);
             catLoader.classList.remove('active');
+            post_cnt.classList.remove('active')
          }
       });
    });

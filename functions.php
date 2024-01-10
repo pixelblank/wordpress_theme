@@ -194,7 +194,7 @@ add_action( 'wp_enqueue_scripts', 'enqueue_my_ajax_script' );
 function req_cat() {
     check_ajax_referer('my_ajax_nonce', 'nonce');
 
-    $category_id = $_POST['category_id'];
+    $category_id = isset($_POST['category_id']) ? $_POST['category_id'] : 'all';
     //var_dump($category_id);
 
     // Récupérer les articles de la catégorie
@@ -203,6 +203,7 @@ function req_cat() {
         'posts_per_page' => -1, // Nombre d'articles à afficher, -1 pour tous
         'cat' => $category_id, // Utilisez 'cat' pour filtrer par ID de catégorie
     );
+    $category_id = isset($_POST['category_id']) ? $_POST['category_id'] : 'all';
     $query = new WP_Query($args);
 
     if ($query->have_posts()) {

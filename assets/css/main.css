@@ -11,7 +11,7 @@
 }
 
 body{
-    background-color: #f2f6f9;
+    background-color: #eaf0f4;
 }
 @media (max-width: 649px) {
     body{
@@ -162,6 +162,9 @@ main{
 
 /***********************************************************************************/
 /**********************************article******************************************/
+.post_cnt{
+    position: relative;
+}
 .post_cnt > article h2{
     color: var(--bleu_lig);
     padding: 5px 0 0 10px;
@@ -529,21 +532,86 @@ main{
 
 /***********************************************************************************/
 /*******************************categories******************************************/
+
+
 #catLoader{
-    position: absolute;
-    top:50%;
-    left:50%;
-    transform: translate(-50%,-50%);
-    display: none;
+    position: fixed;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #eaf0f4;
+    top: 400px;
+    transform: translateX(-50%);
+    z-index: 5;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition-delay: 0.2s;
+    transition-duration: 0.2s;
+    transition-property: opacity;
+    animation: animateLoader 2s linear infinite;
 }
 #catLoader.active{
-    display: block;
+    z-index: 10;
+    opacity: 1;
+}
+
+@keyframes animateLoader {
+    0%{
+        transform: rotate(0);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+#catLoader::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to top, transparent, rgba(66, 94, 119, 0.4));
+    background-size: 25px 45px;
+    background-repeat: no-repeat;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+#catLoader::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    z-index: 10;
+    opacity: 1;
+    background: #b3ced6;
+}
+#catLoader span{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    background: #eaf0f4;
+    border-radius: 50%;
+
+}
+.post_cnt::after{
+    content: '';
+    position: absolute;
+    top: -2%;
+    left: -2%;
+    width: 104%;
+    height: 104%;
+    background-color: #eaf0f4;
+    opacity: 0;
+    z-index: 9;
+    transition: opacity 0.3s ease-in-out;
+}
+.post_cnt.active::after{
     opacity: 1;
 }
 .categories_nav ul {

@@ -2,13 +2,23 @@
 /* Template Name: Catégories */
 ?>
 <?php get_header(); ?>
+<?php
+$args = array(
+    'post_status' => 'publish',
+    'posts_per_page' => 3, // Limiter à 3 articles
+    'orderby' => 'date', // Trier par date
+    'order' => 'DESC' // Du plus récent au plus vieux
+);
+$query = new WP_Query($args);
+?>
 
 <main>
     <div id="catLoader">
-        loading
+            <span></span>
     </div>
     <div class="categories_nav">
         <ul>
+            <li><a href="#" class="category-link" data-category="all"><span class="cat-ico icone-all"></span><span class="cat-title">Toutes les Catégories</span></a></li>
             <?php
             $categories = get_categories();
             foreach($categories as $category) {
@@ -26,7 +36,7 @@
         <?php if ( have_posts() ) : ?>
             <?php
 
-            while ( have_posts() ) : the_post();
+            while ($query->have_posts()) : $query->the_post();
                 if($post->post_type === 'page'){
                     continue;
                 }
@@ -99,6 +109,7 @@
 
                 </article>
             <?php endwhile; ?>
+            <?php wp_reset_postdata(); ?>
         <?php else : ?>
             <p><?php _e('Sorry, no posts matched your criteria.'); ?></p>
         <?php endif; ?>

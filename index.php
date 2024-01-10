@@ -1,11 +1,17 @@
 <?php get_header(); ?>
-
+<?php
+$args = array(
+    'post_status' => 'publish',
+    'posts_per_page' => 3, // Nombre d'articles à afficher, -1 pour tous
+);
+$query = new WP_Query($args);
+?>
 <main>
     <div class="post_cnt">
         <?php if ( have_posts() ) : ?>
             <?php
 
-            while ( have_posts() ) : the_post();
+            while ($query->have_posts()) : $query->the_post();
                 if($post->post_type === 'page'){
                     continue;
                 }
