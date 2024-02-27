@@ -9,42 +9,51 @@ Description: theme
 Version: 1.0
 */
 
-
-function load_scripts(){
-    wp_enqueue_style( 'pixel_root_style', get_stylesheet_directory_uri() . '/style.css');
-    wp_enqueue_style( 'pixel-style', get_stylesheet_directory_uri() . '/assets/css/main.css');
-    wp_enqueue_style( 'ico_css', get_stylesheet_directory_uri() . '/assets/css/ico-style.css');
-    wp_enqueue_style( 'fontawesome_css', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
-    wp_enqueue_style( 'fontawesome_map_css', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css.map');
-    wp_enqueue_style( 'fontawesome_otf', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/FontAwesome.otf');
-    wp_enqueue_style( 'fontawesome_eot', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.eot');
-    wp_enqueue_style( 'fontawesome_svg', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.svg');
-    wp_enqueue_style( 'fontawesome_ttf', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.ttf');
-    wp_enqueue_style( 'fontawesome_woff', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff');
-    wp_enqueue_style( 'fontawesome_woff2', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2');
-}
-add_action( 'wp_enqueue_scripts', 'load_scripts' );
-
-function pixeltheme_enqueue_scripts() {
+function load_script_styles() {
+    // Scripts pour le panneau d'administration
     wp_enqueue_script('pixeltheme-admin-script', get_template_directory_uri() . '/assets/js/admin_script.js', array('jquery'), null, true);
-
     if (!did_action('wp_enqueue_media')) {
         wp_enqueue_media();
     }
-}
-add_action('admin_enqueue_scripts', 'pixeltheme_enqueue_scripts');
 
-function custom_admin_style() {
+    // Styles pour le panneau d'administration en fonction du rôle de l'utilisateur
     $current_user = wp_get_current_user();
-    if($current_user === "administrator"){
-        wp_enqueue_style('custom-admin-style', get_stylesheet_directory_uri() . '/assets/css/admin-style.css');
-    }elseif (in_array('author', $current_user->roles)) {
-        // Si l'utilisateur est un éditeur
-        wp_enqueue_style('custom-admin-style-editor', get_template_directory_uri() . '/assets/css/admin-style-editor.css');
+    if($current_user->roles && is_admin()){
+        if (in_array('administrator', $current_user->roles)) {
+            wp_enqueue_style('custom-admin-style', get_stylesheet_directory_uri() . '/assets/css/admin-style.css');
+        } elseif (in_array('author', $current_user->roles)) {
+            wp_enqueue_style('custom-admin-style-editor', get_template_directory_uri() . '/assets/css/admin-style-editor.css');
+        }
+    }
+
+    // Styles communs
+    wp_enqueue_style('ico_css', get_stylesheet_directory_uri() . '/assets/css/ico-style.css');
+    wp_enqueue_style('pixel_root_style', get_stylesheet_directory_uri() . '/style.css');
+    wp_enqueue_style('pixel-style', get_stylesheet_directory_uri() . '/assets/css/main.css');
+    wp_enqueue_style('pixel-style-header', get_stylesheet_directory_uri() . '/assets/css/header.css');
+    wp_enqueue_style('pixel-style-articles', get_stylesheet_directory_uri() . '/assets/css/articles.css');
+
+    // Font Awesome
+    wp_enqueue_style('fontawesome_css', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+    wp_enqueue_style('fontawesome_map_css', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css.map');
+    wp_enqueue_style('fontawesome_otf', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/FontAwesome.otf');
+    wp_enqueue_style('fontawesome_eot', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.eot');
+    wp_enqueue_style('fontawesome_svg', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.svg');
+    wp_enqueue_style('fontawesome_ttf', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.ttf');
+    wp_enqueue_style('fontawesome_woff', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff');
+    wp_enqueue_style('fontawesome_woff2', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2');
+
+    // Styles spécifiques pour la page de connexion
+    if (is_login_page()) {
+        wp_enqueue_style('styles-page-connexion', get_template_directory_uri() . 'assets/css/connexion.css');
     }
 }
-add_action('admin_enqueue_scripts', 'custom_admin_style');
+add_action('wp_enqueue_scripts', 'load_script_styles');
 
+// Fonction pour vérifier si nous sommes sur la page de connexion
+function is_login_page() {
+    return in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'));
+}
 
 // Ajout du support pour les images à la une
 function img_avnt_setup() {
@@ -54,7 +63,6 @@ add_action( 'after_setup_theme', 'img_avnt_setup' );
 
 // Support pour le logo personnalisé
 function pixeltheme_setup() {
-
     add_theme_support( 'custom-logo', array(
         'height'      => 100,
         'width'       => 400,
@@ -100,8 +108,34 @@ function custom_user_register() {
         $username = sanitize_user($_POST['username']);
         $email = sanitize_email($_POST['email']);
         $password = esc_attr($_POST['password']);
+
+        // Assurez-vous que le champ supplémentaire est défini
+        $phone = isset($_POST['phone']) ? sanitize_text_field($_POST['phone']) : '';
+        $adresse = isset($_POST['adresse']) ? sanitize_text_field($_POST['adresse']) : '';
+        $zipcode = isset($_POST['zipcode']) ? sanitize_text_field($_POST['zipcode']) : '';
+        $ville = isset($_POST['ville']) ? sanitize_text_field($_POST['ville']) : '';
+
         $user_id = wp_create_user($username, $password, $email);
         if (!is_wp_error($user_id)) {
+            // Sauvegardez le champ supplémentaire dans les métadonnées de l'utilisateur
+            if (!empty($phone)) {
+                update_user_meta($user_id, 'phone', $phone);
+            }
+            if (!empty($adresse)) {
+                update_user_meta($user_id, 'adresse', $adresse);
+            }
+            if (!empty($zipcode)) {
+                update_user_meta($user_id, 'zipcode', $zipcode);
+            }
+            if (!empty($ville)) {
+                update_user_meta($user_id, 'ville', $ville);
+            }
+            if (isset($_POST['first_name'])) {
+                update_user_meta($user_id, 'first_name', sanitize_text_field($_POST['first_name']));
+            }
+            if (isset($_POST['last_name'])) {
+                update_user_meta($user_id, 'last_name', sanitize_text_field($_POST['last_name']));
+            }
             wp_redirect(home_url());
             exit;
         } else {
@@ -112,6 +146,82 @@ function custom_user_register() {
 
 add_action('init', 'custom_user_register');
 
+function wp_custom_user_profile_fields($user) {
+    ?>
+    <h3><?php _e("Informations supplémentaires", "votre-textdomain"); ?></h3>
+
+    <table class="form-table">
+        <tr>
+            <th><label for="phone"><?php _e("Téléphone"); ?></label></th>
+            <td>
+                <input type="text" name="phone" id="phone" value="<?php echo esc_attr(get_the_author_meta('phone', $user->ID)); ?>" class="regular-text" />
+            </td>
+        </tr>
+        <tr>
+            <th><label for="adresse"><?php _e("Adresse"); ?></label></th>
+            <td>
+                <input type="text" name="adresse" id="adresse" value="<?php echo esc_attr(get_the_author_meta('adresse', $user->ID)); ?>" class="regular-text" />
+            </td>
+        </tr>
+        <tr>
+            <th><label for="zipcode"><?php _e("Code Postal"); ?></label></th>
+            <td>
+                <input type="text" name="zipcode" id="zipcode" value="<?php echo esc_attr(get_the_author_meta('zipcode', $user->ID)); ?>" class="regular-text" />
+            </td>
+        </tr>
+        <tr>
+            <th><label for="ville"><?php _e("Ville"); ?></label></th>
+            <td>
+                <input type="text" name="ville" id="ville" value="<?php echo esc_attr(get_the_author_meta('ville', $user->ID)); ?>" class="regular-text" />
+            </td>
+        </tr>
+        <tr>
+            <th><label for="custom_avatar"><?php _e("Uploader une nouvelle photo", "custom-user-avatar"); ?></label></th>
+            <td>
+                <input type="file" name="custom_avatar" id="custom_avatar">
+                <?php
+                // Afficher l'avatar actuel
+                $custom_avatar = get_user_meta($user->ID, 'custom_avatar', true);
+                if ($custom_avatar) {
+                    echo '<img src="' . esc_url($custom_avatar) . '" alt="" style="width:100px;">';
+                }
+                ?>
+            </td>
+        </tr>
+    </table>
+    <?php
+}
+add_action('show_user_profile', 'wp_custom_user_profile_fields');
+add_action('edit_user_profile', 'wp_custom_user_profile_fields');
+
+function wp_save_custom_user_profile_fields($user_id) {
+
+    if (!current_user_can('edit_user', $user_id)) {
+        return false;
+    }
+
+    update_user_meta($user_id, 'phone', $_POST['phone']);
+    update_user_meta($user_id, 'adresse', $_POST['adresse']);
+    update_user_meta($user_id, 'zipcode', $_POST['zipcode']);
+    update_user_meta($user_id, 'ville', $_POST['ville']);
+    if (!empty($_FILES['custom_avatar']['name'])) {
+        $uploaded = wp_upload_bits($_FILES['custom_avatar']['name'], null, file_get_contents($_FILES['custom_avatar']['tmp_name']));
+        if (isset($uploaded['error']) && $uploaded['error'] == 0) {
+            // Le fichier a été téléchargé avec succès, sauvegarder l'URL de l'image
+            update_user_meta($user_id, 'custom_avatar', $uploaded['url']);
+        } else {
+            // Afficher une erreur lors du téléchargement
+            wp_die('Il y a eu une erreur lors du téléchargement de votre fichier. L\'erreur est: ' . $uploaded['error']);
+        }
+    }
+}
+add_action('personal_options_update', 'wp_save_custom_user_profile_fields');
+add_action('edit_user_profile_update', 'wp_save_custom_user_profile_fields');
+
+function custom_user_profile_form_tag() {
+    echo ' enctype="multipart/form-data"';
+}
+add_action('user_edit_form_tag', 'custom_user_profile_form_tag');
 
 // données nécessaires
 function pixeltheme_needed_pages(){
@@ -360,3 +470,13 @@ function save_category_icon_field($term_id) {
 }
 add_action('edited_category', 'save_category_icon_field');
 
+
+add_filter('wp_mail_from', 'custom_wp_mail_from');
+function custom_wp_mail_from($email) {
+    return 'seb@gmail.com'; // Remplacez par l'adresse e-mail souhaitée
+}
+
+add_filter('wp_mail_from_name', 'custom_wp_mail_from_name');
+function custom_wp_mail_from_name($name) {
+    return 'Seb'; // Remplacez par le nom souhaité
+}

@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+
    let ham = document.querySelector('.menu_icone');
    ham.addEventListener('click', function () {
       this.nextElementSibling.classList.toggle('active')

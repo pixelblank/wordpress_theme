@@ -58,3 +58,6 @@ a
     margin: 2px 0 5px;
     color: #c7d0d7;
 }
+.user-profile-picture{
+    display: none;
+}

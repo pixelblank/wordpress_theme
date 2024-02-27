@@ -1,11 +1,13 @@
 <?php
 /* Template Name: Catégories */
 ?>
-<?php get_header(); ?>
-<?php
+<?php get_header();
+
+$annonceur_page_url = get_permalink(get_page_uri(122));
+$annonceur_id = get_the_author_meta( 'ID' );
+
 $args = array(
     'post_status' => 'publish',
-    'posts_per_page' => 3, // Limiter à 3 articles
     'orderby' => 'date', // Trier par date
     'order' => 'DESC' // Du plus récent au plus vieux
 );
@@ -13,8 +15,10 @@ $query = new WP_Query($args);
 ?>
 
 <main>
-    <div id="catLoader">
-            <span></span>
+    <div id="catLoaderContainer">
+        <div id="catLoader">
+                <span></span>
+        </div>
     </div>
     <div class="categories_nav">
         <ul>
@@ -54,7 +58,7 @@ $query = new WP_Query($args);
                                     -->
                                 </span>
                             <span class="pre_title">Autheur:</span>
-
+                            <a href="<?php echo esc_url(add_query_arg('annonceur_id', $annonceur_id, $annonceur_page_url)); ?>">Nom de l'Annonceur</a>
                             <a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>">
                                 <?php the_author(); ?>
                             </a>

@@ -1,0 +1,112 @@
+
+/***********************************************************************************/
+/*************************connexion et inscription**********************************/
+.page-id-81 main, .page-id-79 main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form_wrp{
+    position:relative;
+    width: 600px;
+    padding: 60px 50px 50px;
+    box-shadow: 15px 15px 20px rgba(0,0,0,0.1),
+    -15px -15px 20px #fffb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-direction: column;
+}
+.form_wrp form{
+    position:relative;
+    width: 100%;
+    display: flex;
+    gap: 23px;
+    flex-wrap: wrap;
+}
+.form_wrp h1{
+    font-size: 1.25em;
+    margin-bottom: 30px;
+    line-height: 0.9em;
+}
+.form_wrp form p{
+    position: relative;
+    display: flex;
+    width: 47%;
+}
+.form_wrp form p input{
+    border: none;
+    outline: none;
+    background-color: transparent;
+    border-radius: 10px;
+    font-size: 0.9em;
+}
+.form_wrp form p input::placeholder{
+    font-size: 0.8em;
+}
+.form_wrp form p input[type="text"],
+.form_wrp form p input[type="password"],
+.form_wrp form p input[type="email"]{
+    width: 100%;
+    padding: 7px 20px;
+    margin-bottom: 20px;
+    box-shadow: inset 5px 5px 10px rgba(0,0,0,0.1),
+    inset -5px -5px 10px #fff;
+}
+.form_wrp form p input[type="checkbox"]{
+    margin-right: 5px;
+}
+.form_wrp form p label{
+    display: none;
+}
+.form_wrp form p.login-remember label{
+    display: flex;
+    align-items: center;
+}
+.form_wrp #user_login, .form_wrp #user_pass, .form_wrp #user_email{
+    background-repeat: no-repeat;
+    background-position: 15px center; /* Ajuster selon le besoin */
+    padding-left: 40px; /* Donner de l'espace pour l'icône */
+}
+.form_wrp #user_login {
+    background-image: url('http://localhost/wordpress_advert/wp-content/themes/pixeltheme/assets/image/user.svg');
+}
+.form_wrp #user_pass {
+    background-image: url('http://localhost/wordpress_advert/wp-content/themes/pixeltheme/assets/image/keys.svg');
+}
+.form_wrp #user_email {
+    background-image: url('http://localhost/wordpress_advert/wp-content/themes/pixeltheme/assets/image/email.svg');
+}
+
+.form_wrp form p input[type="submit"]{
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.1),
+    -5px -5px 10px #fff;
+    width: 100%;
+    padding: 5px 20px;
+    cursor: pointer;
+    font-size: 0.7em;
+    margin: 0;
+    height: 47px;
+}
+.form_wrp form p input[type="submit"]:focus{
+    box-shadow: inset 5px 5px 10px rgba(0,0,0,0.1),
+    inset -5px -5px 10px #fff;
+}
+.form_wrp .password_wrp{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+.form_wrp .password_wrp a{
+    display: flex;
+    color: var(--bleu_lig);
+    font-size: 0.65em;
+    transition: 0.3s ease-in-out;
+}
+.form_wrp .password_wrp a:hover{
+    color: #0090e8;
+}
+.form_wrp .password_wrp a:last-child{
+    margin-top: 10px;
+}

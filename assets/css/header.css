@@ -1,0 +1,93 @@
+
+/***********************************************************************************/
+/*****************************************header************************************/
+
+body > header{
+    width: 100%;
+    background-color: var(--bleu_lig);
+    display: flex;
+    align-items: center;
+}
+body > header > nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Divise le conteneur en deux colonnes */
+    justify-content: space-between;
+    align-items: center;
+    max-width: var(--main_size);
+    min-width: 100%;
+    margin: 0 auto;
+    padding: 10px 10px;
+}
+body > header > nav a{
+    color: white;
+    font-size: 1.25em;
+}
+body > header .nav_left {
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+}
+body > header .nav_right {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+body > header .nav_left .menu-header{
+    margin-left: 10px;
+}
+body > header > .nav_left > .menu-header > .menu {
+    display: flex;
+    align-items: center;
+}
+
+body > header > nav .menu_icone {
+    display: flex;
+}
+@media(max-width: 500px){
+    body > header .nav_right .search_bar{
+        display: none;
+    }
+    body > header .nav_left .menu-header .menu_list {
+        display: none;
+    }
+    body > header .nav_left .menu-header .menu_list.active {
+        position: absolute;
+        top: 26px;
+        left: -10px;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--bleu_lig);
+    }
+    body > header .nav_left .menu-header {
+        position: relative;
+    }
+    body > header .nav_left .menu_list ul li a {
+        padding: 10px 10px;
+        display: block;
+    }
+
+}
+header > nav .site-title {
+    display: flex;
+    align-items: center;
+}
+header > nav .site-title > a:nth-child(1) {
+    text-transform: uppercase;
+}
+
+body > header > nav .menu_icone svg path{
+    fill:#ffffff;
+}
+body > header > nav .search-form {
+    display: flex;
+    align-items: center;
+}
+body > header > nav .search-form > label:nth-child(1) {
+    display: flex;
+    align-items: center;
+}
+body > header > nav .customer_nav {
+    display: flex;
+    align-items: center;
+}
