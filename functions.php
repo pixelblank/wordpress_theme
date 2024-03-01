@@ -32,6 +32,7 @@ function load_script_styles() {
     wp_enqueue_style('pixel-style', get_stylesheet_directory_uri() . '/assets/css/main.css');
     wp_enqueue_style('pixel-style-header', get_stylesheet_directory_uri() . '/assets/css/header.css');
     wp_enqueue_style('pixel-style-articles', get_stylesheet_directory_uri() . '/assets/css/articles.css');
+    wp_enqueue_style('pixel-style-auth', get_stylesheet_directory_uri() . '/assets/css/author.css');
 
     // Font Awesome
     wp_enqueue_style('fontawesome_css', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
@@ -44,16 +45,20 @@ function load_script_styles() {
     wp_enqueue_style('fontawesome_woff2', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2');
 
     // Styles spécifiques pour la page de connexion
-    if (is_login_page()) {
-        wp_enqueue_style('styles-page-connexion', get_template_directory_uri() . 'assets/css/connexion.css');
+    if (for_custom_page()) {
+        wp_enqueue_style('styles-page-connexion', get_template_directory_uri() . '/assets/css/connexion.css');
     }
 }
 add_action('wp_enqueue_scripts', 'load_script_styles');
 
-// Fonction pour vérifier si nous sommes sur la page de connexion
-function is_login_page() {
-    return in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'));
+// Fonction pour vérifier quel template est utilisé
+function for_custom_page() {
+    if (is_page_template('page-connexion.php')) {
+        return true;
+    }
+    return false;
 }
+
 
 // Ajout du support pour les images à la une
 function img_avnt_setup() {

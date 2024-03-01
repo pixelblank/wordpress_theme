@@ -4,9 +4,10 @@
 
 body > header{
     width: 100%;
-    background-color: var(--bleu_lig);
+    background-color: var(--white);
     display: flex;
     align-items: center;
+    box-shadow:  2px 2px 15px #4848481a;
 }
 body > header > nav {
     display: grid;
@@ -19,13 +20,15 @@ body > header > nav {
     padding: 10px 10px;
 }
 body > header > nav a{
-    color: white;
-    font-size: 1.25em;
+    color: var(--black);
+    font-size: 0.65em;
 }
 body > header .nav_left {
     grid-column: 1;
     display: flex;
     align-items: center;
+}
+body > header .nav_left .logo-container .site-title a{
 }
 body > header .nav_right {
     grid-column: 2;
@@ -91,3 +94,66 @@ body > header > nav .customer_nav {
     display: flex;
     align-items: center;
 }
+
+@media (min-width: 501px) and (max-width: 680px) {
+    body > header .nav_left .menu-header {
+        position: relative;
+    }
+    body > header .nav_right .search_bar {
+        display: none;
+    }
+    body > header .nav_left .menu-header .menu_list {
+        display: none;
+    }
+    body > header .nav_left .menu-header .menu_list.active {
+        position: absolute;
+        top: 26px;
+        left: -10px;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--bleu_lig);
+    }
+    body > header .nav_left .menu_list ul li a {
+        padding: 10px 10px;
+        display: block;
+        font-size: 1em;
+    }
+}
+
+@media (min-width: 1101px) and (max-width: 1900px){
+    body > header > nav{
+        min-width: var(--main_size);
+    }
+    body > header > nav .menu_icone {
+        display: none;
+    }
+    body > header > nav a {
+        font-size: 0.8em;
+    }
+    body > header .menu-header .menu{
+        display: flex;
+    }
+    body > header .nav_left .menu-header li {
+        padding: 0 10px;
+        display: flex;
+    }
+}
+@media (min-width: 1901px){
+    body > header > nav{
+        min-width: var(--main_size);
+    }
+    body > header > nav .menu_icone {
+        display: none;
+    }
+    body > header > nav a {
+        font-size: 0.65em;
+    }
+    body > header .menu-header .menu{
+        display: flex;
+    }
+    body > header .nav_left .menu-header li {
+        padding: 0 10px;
+        display: flex;
+    }
+}
+

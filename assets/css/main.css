@@ -1,5 +1,26 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+@font-face {
+    font-family: 'Retrokia Caps';
+    src: url('../font/Retrokia Caps.woff2') format('woff2'),
+    url('../font/Retrokia Caps.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Retrokia';
+    src: url('../font/Retrokia.woff2') format('woff2'),
+    url('../font/Retrokia.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
 :root{
-    --bleu_lig: #62b8ec;
+    --black: #464141;
+    --white: #f8f9fc;
+    --bleu_lig: #f8f9fc;
     --bleu_med: #009fff;
     --main_size: 1220px;
     --bleugpt: #87CEEB
@@ -11,7 +32,9 @@
 }
 
 body{
-    background-color: #eaf0f4;
+    background-color: #f8f9fc;
+    color: var(--black);
+    font-family:"Roboto-Regular",sans-serif;
 }
 @media (max-width: 649px) {
     body{
@@ -41,6 +64,9 @@ body{
 a{
     text-decoration: none;
 }
+h1,h2,h3,h4,h5,h6{
+    color: var(--black)
+}
 h1{
     font-size: 75%;
 }
@@ -51,6 +77,13 @@ ul, li{
     list-style: none;
     padding: 0;
     margin: 0;
+}
+h2{
+   font-size: 1em;
+    font-weight: 600;
+}
+h3{
+    font-size: 0.7em;
 }
 
 

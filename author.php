@@ -1,34 +1,14 @@
-<?php get_header(); ?>
+<?php
+get_header();
 
-    <div id="primary" class="content-area">
-    <main id="main" class="site-main">
-        <div class="author-profile">
-            <h2>Profil de : <?php the_author(); ?></h2>
-            <div class="author-details">
+global $wpdb;
+$author_id = get_queried_object_id(); // Obtient l'ID de l'auteur courant
+$custom_avatar = get_user_meta($author_id, 'custom_avatar', true);
+global $wpdb;
+$author_id = get_queried_object_id(); // Obtenez l'ID de l'auteur courant.
 
-                <?php
-                    global $wpdb;
-                    $author_id = get_queried_object_id(); // Obtient l'ID de l'auteur courant
-                    $custom_avatar = get_user_meta($author_id, 'custom_avatar', true);
-                    if($custom_avatar){
-                        echo '<img src="' . esc_url($custom_avatar) . '" alt="Avatar">';
-                    }else{
-                        echo get_avatar(get_the_author_meta('ID'), 90);
-
-                    }
-                ?>
-                <p><?php echo nl2br(get_the_author_meta('description')); ?></p>
-            </div>
-        </div>
-
-
-
-        <?php
-        global $wpdb;
-        $author_id = get_queried_object_id(); // Obtenez l'ID de l'auteur courant.
-
-        // Préparez la requête SQL pour calculer la moyenne des notes pour les posts de cet auteur.
-        $query = "
+// Préparez la requête SQL pour calculer la moyenne des notes pour les posts de cet auteur.
+$query = "
             SELECT AVG(rating) as average_rating
             FROM {$wpdb->prefix}rating_system
             WHERE post_id IN (
@@ -36,41 +16,75 @@
                 WHERE post_author = %d AND post_type = 'post' AND post_status = 'publish'
             )
         ";
-        $average_rating = $wpdb->get_var($wpdb->prepare($query, $author_id));
+$average_rating = $wpdb->get_var($wpdb->prepare($query, $author_id));
 
-        if (!is_null($average_rating)) {?>
+?>
 
-        <div class="annonceur-info" data-annonceur-id="<?php echo $author_id; ?>">
-            <div class="annonceur-average-rating">Moyenne des votes : <?php echo round($average_rating, 2) ?></div>
+    <div id="primary" class="content-area">
+    <main id="main" class="site-main">
+        <div class="author-profile">
+
+            <div class="author-details">
+                <div class="author-left">
+                    <?php if($custom_avatar){ ?>
+                        <div class="author-picture" style="background-image:url('<?php echo esc_url($custom_avatar)?>')"></div>
+                    <?php }else{echo get_avatar(get_the_author_meta('ID'), 90);} ?>
+                </div>
+                <div class="author-right">
+                    <div class="author-header">
+                        <h2><?php the_author(); ?></h2>
+                        <div class="rating_wrp">
+                            <?php
+                            if (!is_null($average_rating)) {?>
+
+                                <div class="annonceur-info" data-annonceur-id="<?php echo $author_id; ?>">
+                                    <div class="annonceur-rating-cnt">
+                                        <div class="annonceur-stars-background">★★★★★</div>
+                                        <div class="annonceur-stars-foreground" data-foreground-for-author-id="<?php echo $author_id; ?>" style="width: <?php echo esc_attr($average_rating * 20); ?>%;">★★★★★</div>
+                                    </div>
+                                </div>
+                                <?php
+                            } else {
+                                echo '<div>Cet auteur n\'a pas encore reçu de votes.</div>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+
+                    <p>
+                        <?php echo nl2br(get_the_author_meta('description')); ?>
+                    </p>
+                </div>
+            </div>
+
         </div>
-            <?php
-        } else {
-            echo '<div>Cet auteur n\'a pas encore reçu de votes.</div>';
-        }
-
+        <?php
         echo ('<div class="post_cnt">');
         if (have_posts()) : while (have_posts()) : the_post(); ?>
 
             <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-
                 <header>
                     <div class="author_annonce">
                             <span class="pre_icone_wrp">
                                 <?php echo get_avatar( get_the_author_meta( 'ID' ), 32 ); // 32 est la taille de l'avatar en pixels ?>
-                                <!--
-                                <svg version="1.1" class="author_icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 102 102" style="enable-background:new 0 0 102 102;" xml:space="preserve">
-                                    <path class="author_path" d="M85.4,11.4L45.8,51l-1.7-3.3c-1.1-2.2-2.9-3.9-5-5L35.8,41L75.4,1.4L85.4,11.4z M98.2,24.2l-10-10 L48.6,53.8l3.3,1.7c2.2,1.1,3.9,2.9,5,5l1.7,3.3L98.2,24.2z M12.3,87.3L25.9,81l-7.3-7.3L12.3,87.3z M55.4,67L51.7,60 c-1.5-2.5-5.7-3.5-8.9-3.1c0.5-3.4-0.6-7.5-3.1-8.9l-7.1-3.7L20.8,68.9l9.9,9.9L55.4,67z M96.5,98.1c0-1.4-1.1-2.5-2.5-2.5H6.3 c-1.4,0-2.5,1.1-2.5,2.5s1.1,2.5,2.5,2.5H94C95.4,100.6,96.5,99.5,96.5,98.1z"/>
-                                </svg>
-                                -->
                             </span>
                         <span class="pre_title">Autheur:</span>
 
                         <a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>">
                             <?php the_author(); ?>
                         </a>
+
+                        <?php
+                            $post_id = get_the_ID(); // Récupérer l'ID du post courant
+                            $user_rating = $wpdb->get_var($wpdb->prepare("SELECT rating FROM {$wpdb->prefix}rating_system WHERE post_id = %d AND user_id = %d", $post_id, get_current_user_id()));
+                            if ($user_rating !== null) {
+                                $stars_width = $user_rating * 20; // Convertir la note en largeur en pourcentage
+                            }
+                        ?>
+
                         <div class="rating-container" data-post-id="<?php the_ID(); ?>"> <!-- Ajoutez un identifiant de post ici -->
                             <div class="stars-background">★★★★★</div>
-                            <div class="stars-foreground" data-foreground-for-post-id="<?php the_ID(); ?>">★★★★★</div> <!-- Mettez à jour cette largeur dynamiquement -->
+                            <div class="stars-foreground" data-foreground-for-post-id="<?php the_ID(); ?>" style="width:<?php echo esc_attr($stars_width); ?>%">★★★★★</div> <!-- Mettez à jour cette largeur dynamiquement -->
                             <div class="rating-inputs">
                                 <?php for ($star = 1; $star <= 5; $star++): ?>
                                     <a href="#" class="rating-link" data-post-id="<?php the_ID(); ?>" data-rating="<?php echo $star; ?>">
@@ -127,4 +141,3 @@
     </main>
     </div>
 <?php get_footer(); ?>
-
