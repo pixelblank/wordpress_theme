@@ -4,10 +4,10 @@
 
 body > header{
     width: 100%;
-    background-color: var(--white);
+    background-color: #fff;
     display: flex;
     align-items: center;
-    box-shadow:  2px 2px 15px #4848481a;
+    box-shadow:  2px 2px 15px #0000002e;
 }
 body > header > nav {
     display: grid;

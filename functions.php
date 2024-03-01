@@ -47,6 +47,7 @@ function load_script_styles() {
     // Styles spécifiques pour la page de connexion
     if (for_custom_page()) {
         wp_enqueue_style('styles-page-connexion', get_template_directory_uri() . '/assets/css/connexion.css');
+        wp_enqueue_script('script-page-connexion', get_template_directory_uri() . '/assets/js/connexion_script.js', array('jquery'), null, true);
     }
 }
 add_action('wp_enqueue_scripts', 'load_script_styles');

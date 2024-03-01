@@ -51,7 +51,7 @@ $average_rating = $wpdb->get_var($wpdb->prepare($query, $author_id));
                         </div>
                     </div>
 
-                    <p>
+                    <p class="author-description" contenteditable="true">
                         <?php echo nl2br(get_the_author_meta('description')); ?>
                     </p>
                 </div>

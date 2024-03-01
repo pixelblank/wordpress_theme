@@ -19,7 +19,7 @@
 
 :root{
     --black: #464141;
-    --white: #f8f9fc;
+    --white: #eaeaea;
     --bleu_lig: #f8f9fc;
     --bleu_med: #009fff;
     --main_size: 1220px;
@@ -32,7 +32,7 @@
 }
 
 body{
-    background-color: #f8f9fc;
+    background-color: #f2f2f2;
     color: var(--black);
     font-family:"Roboto-Regular",sans-serif;
 }
